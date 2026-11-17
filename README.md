@@ -60,14 +60,14 @@ This workflow creates an automated WhatsApp bot that:
 ### Configuration Steps
 
 1. **Import the Workflow**
-   - Import the provided JSON file into your n8n instance
+   - Import `WorkFlowP2.json` into your n8n instance
    - Replace all placeholder credential IDs with your actual credentials
 
 2. **WhatsApp Setup**
    - Configure WhatsApp Business API
    - Set up webhook endpoints
    - Replace `YOUR_PHONE_NUMBER_ID` with your WhatsApp Business phone number ID
-   - Replace `RECIPIENT_PHONE_NUMBER` with the target phone number
+   - Replace `RECIPIENT_PHONE_NUMBER` with the target phone number (every reply goes to this one number, see Known Limitations)
 
 3. **OpenRouter Configuration**
    - Create an OpenRouter account
@@ -87,7 +87,13 @@ This workflow creates an automated WhatsApp bot that:
 1. Send a message to your WhatsApp Business number
 2. The bot will receive and process the message
 3. AI generates a response based on the message and conversation history
-4. Response is sent back to the user via WhatsApp
+4. Response is sent via WhatsApp to the number set in the Send message node
+
+## Known Limitations
+
+- **Fixed reply recipient**: the Send message node uses the static `recipientPhoneNumber` value, not the sender of the incoming message. Replies only reach the original sender if that is the number you configured.
+- **Shared memory**: Simple Memory uses the fixed session key `chat_summary`, so every sender shares one conversation history.
+- **Text messages only**: the AI Agent prompt reads `messages[0].text.body`, so images, voice notes and other non-text messages have no text for the agent to use.
 
 ## Customization Options
 
